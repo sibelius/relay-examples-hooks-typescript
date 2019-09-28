@@ -17,18 +17,28 @@ import TodoListFooter from './TodoListFooter';
 import TodoTextInput from './TodoTextInput';
 
 import React from 'react';
-import {createFragmentContainer, graphql} from 'react-relay';
-import type {RelayProp} from 'react-relay';
+import {graphql} from 'react-relay';
 import type {TodoApp_user} from 'relay/TodoApp_user.graphql';
+import { useFragment, useRelayEnvironment } from 'relay-experimental';
 
 type Props = {|
-  +relay: RelayProp,
   +user: TodoApp_user,
 |};
 
-const TodoApp = ({relay, user}: Props) => {
+const TodoApp = (props: Props) => {
+  const user = useFragment(graphql`
+    fragment TodoApp_user on User {
+      id
+      userId
+      totalCount
+      ...TodoListFooter_user
+      ...TodoList_user
+    }
+  `, props.user);
+  const environment = useRelayEnvironment();
+
   const handleTextInputSave = (text: string) => {
-    AddTodoMutation.commit(relay.environment, text, user);
+    AddTodoMutation.commit(environment, text, user);
     return;
   };
 
@@ -67,14 +77,4 @@ const TodoApp = ({relay, user}: Props) => {
   );
 };
 
-export default createFragmentContainer(TodoApp, {
-  user: graphql`
-    fragment TodoApp_user on User {
-      id
-      userId
-      totalCount
-      ...TodoListFooter_user
-      ...TodoList_user
-    }
-  `,
-});
+export default TodoApp;

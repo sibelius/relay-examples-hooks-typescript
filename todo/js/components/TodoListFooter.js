@@ -14,7 +14,8 @@
 import RemoveCompletedTodosMutation from '../mutations/RemoveCompletedTodosMutation';
 
 import React from 'react';
-import {graphql, createFragmentContainer, type RelayProp} from 'react-relay';
+import {graphql, type RelayProp} from 'react-relay';
+import { useFragment, useRelayEnvironment } from 'relay-experimental';
 import type {TodoListFooter_user} from 'relay/TodoListFooter_user.graphql';
 type Todos = $NonMaybeType<$ElementType<TodoListFooter_user, 'todos'>>;
 type Edges = $NonMaybeType<$ElementType<Todos, 'edges'>>;
@@ -25,11 +26,30 @@ type Props = {|
   +user: TodoListFooter_user,
 |};
 
-const TodoListFooter = ({
-  relay,
-  user,
-  user: {todos, completedCount, totalCount},
-}: Props) => {
+const TodoListFooter = (props: Props) => {
+  const environment = useRelayEnvironment();
+
+  const user = useFragment(graphql`
+    fragment TodoListFooter_user on User {
+      id
+      userId
+      completedCount
+      todos(
+        first: 2147483647 # max GraphQLInt
+      ) @connection(key: "TodoList_todos") {
+        edges {
+          node {
+            id
+            complete
+          }
+        }
+      }
+      totalCount
+    }
+  `, props.user);
+
+  const {todos, completedCount, totalCount} = user;
+
   const completedEdges: $ReadOnlyArray<?Edge> =
     todos && todos.edges
       ? todos.edges.filter(
@@ -39,7 +59,7 @@ const TodoListFooter = ({
 
   const handleRemoveCompletedTodosClick = () => {
     RemoveCompletedTodosMutation.commit(
-      relay.environment,
+      environment,
       {
         edges: completedEdges,
       },
@@ -67,23 +87,4 @@ const TodoListFooter = ({
   );
 };
 
-export default createFragmentContainer(TodoListFooter, {
-  user: graphql`
-    fragment TodoListFooter_user on User {
-      id
-      userId
-      completedCount
-      todos(
-        first: 2147483647 # max GraphQLInt
-      ) @connection(key: "TodoList_todos") {
-        edges {
-          node {
-            id
-            complete
-          }
-        }
-      }
-      totalCount
-    }
-  `,
-});
+export default TodoListFooter;

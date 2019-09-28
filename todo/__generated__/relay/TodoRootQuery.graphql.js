@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash e1ad56628c51b94ece49a2c016e334a5
+ * @relayHash f61ad62fcf102903e1f8e4b2411b13fd
  */
 
 /* eslint-disable */
@@ -10,23 +10,23 @@
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
 import type { TodoApp_user$ref } from "./TodoApp_user.graphql";
-export type appQueryVariables = {|
+export type TodoRootQueryVariables = {|
   userId?: ?string
 |};
-export type appQueryResponse = {|
+export type TodoRootQueryResponse = {|
   +user: ?{|
     +$fragmentRefs: TodoApp_user$ref
   |}
 |};
-export type appQuery = {|
-  variables: appQueryVariables,
-  response: appQueryResponse,
+export type TodoRootQuery = {|
+  variables: TodoRootQueryVariables,
+  response: TodoRootQueryResponse,
 |};
 */
 
 
 /*
-query appQuery(
+query TodoRootQuery(
   $userId: String
 ) {
   user(id: $userId) {
@@ -135,7 +135,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "appQuery",
+    "name": "TodoRootQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -160,7 +160,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "appQuery",
+    "name": "TodoRootQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -296,13 +296,13 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "appQuery",
+    "name": "TodoRootQuery",
     "id": null,
-    "text": "query appQuery(\n  $userId: String\n) {\n  user(id: $userId) {\n    ...TodoApp_user\n    id\n  }\n}\n\nfragment TodoApp_user on User {\n  id\n  userId\n  totalCount\n  ...TodoListFooter_user\n  ...TodoList_user\n}\n\nfragment TodoListFooter_user on User {\n  id\n  userId\n  completedCount\n  todos(first: 2147483647) {\n    edges {\n      node {\n        id\n        complete\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  totalCount\n}\n\nfragment TodoList_user on User {\n  todos(first: 2147483647) {\n    edges {\n      node {\n        id\n        complete\n        ...Todo_todo\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  id\n  userId\n  totalCount\n  completedCount\n  ...Todo_user\n}\n\nfragment Todo_todo on Todo {\n  complete\n  id\n  text\n}\n\nfragment Todo_user on User {\n  id\n  userId\n  totalCount\n  completedCount\n}\n",
+    "text": "query TodoRootQuery(\n  $userId: String\n) {\n  user(id: $userId) {\n    ...TodoApp_user\n    id\n  }\n}\n\nfragment TodoApp_user on User {\n  id\n  userId\n  totalCount\n  ...TodoListFooter_user\n  ...TodoList_user\n}\n\nfragment TodoListFooter_user on User {\n  id\n  userId\n  completedCount\n  todos(first: 2147483647) {\n    edges {\n      node {\n        id\n        complete\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  totalCount\n}\n\nfragment TodoList_user on User {\n  todos(first: 2147483647) {\n    edges {\n      node {\n        id\n        complete\n        ...Todo_todo\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  id\n  userId\n  totalCount\n  completedCount\n  ...Todo_user\n}\n\nfragment Todo_todo on Todo {\n  complete\n  id\n  text\n}\n\nfragment Todo_user on User {\n  id\n  userId\n  totalCount\n  completedCount\n}\n",
     "metadata": {}
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'a2e70f652f32c53fa112a1013d9981ea';
+(node/*: any*/).hash = '98e90b5775906ed29de51073ce1757c4';
 module.exports = node;
