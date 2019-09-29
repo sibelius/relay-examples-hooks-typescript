@@ -14,48 +14,37 @@
 import {
   commitMutation,
   graphql,
-  type Disposable,
-  type Environment,
+  Disposable,
+  Environment,
 } from 'react-relay';
 
-import type {Todo_todo} from 'relay/Todo_todo.graphql';
-import type {Todo_user} from 'relay/Todo_user.graphql';
-import type {
-  ChangeTodoStatusInput,
-  ChangeTodoStatusMutationResponse,
-} from 'relay/ChangeTodoStatusMutation.graphql';
+import {Todo_todo} from 'relay/Todo_todo.graphql';
+
+import {
+  RenameTodoInput,
+  RenameTodoMutationResponse,
+} from 'relay/RenameTodoMutation.graphql';
 
 const mutation = graphql`
-  mutation ChangeTodoStatusMutation($input: ChangeTodoStatusInput!) {
-    changeTodoStatus(input: $input) {
+  mutation RenameTodoMutation($input: RenameTodoInput!) {
+    renameTodo(input: $input) {
       todo {
         id
-        complete
-      }
-      user {
-        id
-        completedCount
+        text
       }
     }
   }
 `;
 
 function getOptimisticResponse(
-  complete: boolean,
+  text: string,
   todo: Todo_todo,
-  user: Todo_user,
-): ChangeTodoStatusMutationResponse {
+): RenameTodoMutationResponse {
   return {
-    changeTodoStatus: {
+    renameTodo: {
       todo: {
-        complete: complete,
         id: todo.id,
-      },
-      user: {
-        id: user.id,
-        completedCount: complete
-          ? user.completedCount + 1
-          : user.completedCount - 1,
+        text: text,
       },
     },
   };
@@ -63,13 +52,11 @@ function getOptimisticResponse(
 
 function commit(
   environment: Environment,
-  complete: boolean,
+  text: string,
   todo: Todo_todo,
-  user: Todo_user,
 ): Disposable {
-  const input: ChangeTodoStatusInput = {
-    complete,
-    userId: user.userId,
+  const input: RenameTodoInput = {
+    text,
     id: todo.id,
   };
 
@@ -78,7 +65,7 @@ function commit(
     variables: {
       input,
     },
-    optimisticResponse: getOptimisticResponse(complete, todo, user),
+    optimisticResponse: getOptimisticResponse(text, todo),
   });
 }
 

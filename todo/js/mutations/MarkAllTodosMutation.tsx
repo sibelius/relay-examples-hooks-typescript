@@ -14,26 +14,24 @@
 import {
   commitMutation,
   graphql,
-  type Disposable,
-  type Environment,
+  Disposable,
+  Environment,
 } from 'react-relay';
 
-import type {
+import {
   MarkAllTodosInput,
   MarkAllTodosMutationResponse,
 } from 'relay/MarkAllTodosMutation.graphql';
 
-type MarkAllTodos = $NonMaybeType<
-  $ElementType<MarkAllTodosMutationResponse, 'markAllTodos'>,
->;
-type ChangedTodos = $NonMaybeType<$ElementType<MarkAllTodos, 'changedTodos'>>;
-type ChangedTodo = $ElementType<ChangedTodos, number>;
+type MarkAllTodos = MarkAllTodosMutationResponse['markAllTodos'];
+type ChangedTodos = MarkAllTodos['changedTodos'];
+type ChangedTodo = ChangedTodos['0'];
 
-import type {TodoList_user} from 'relay/TodoList_user.graphql';
-type Todos = $NonMaybeType<$ElementType<TodoList_user, 'todos'>>;
-type Edges = $NonMaybeType<$ElementType<Todos, 'edges'>>;
-type Edge = $NonMaybeType<$ElementType<Edges, number>>;
-type Node = $NonMaybeType<$ElementType<Edge, 'node'>>;
+import {TodoList_user} from 'relay/TodoList_user.graphql';
+type Todos = TodoList_user['todos'];
+type Edges = Todos['edges'];
+type Edge = Edges['0'];
+type Node = Edge['node'];
 
 const mutation = graphql`
   mutation MarkAllTodosMutation($input: MarkAllTodosInput!) {
@@ -56,10 +54,10 @@ function getOptimisticResponse(
   user: TodoList_user,
 ): MarkAllTodosMutationResponse {
   // Relay returns Maybe types a lot of times in a connection that we need to cater for
-  const validNodes: $ReadOnlyArray<Node> = todos.edges
+  const validNodes: ReadonlyArray<Node> = todos.edges
     ? todos.edges
         .filter(Boolean)
-        .map((edge: Edge): ?Node => edge.node)
+        .map((edge: Edge): Node | null => edge.node)
         .filter(Boolean)
     : [];
 

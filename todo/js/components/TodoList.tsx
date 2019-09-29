@@ -14,27 +14,34 @@
 import MarkAllTodosMutation from '../mutations/MarkAllTodosMutation';
 import Todo from './Todo';
 
-import React from 'react';
-import {graphql, type RelayProp} from 'react-relay';
-import type {TodoList_user} from 'relay/TodoList_user.graphql';
-import { useRelayEnvironment, useFragment } from 'relay-experimental';
-type Todos = $NonMaybeType<$ElementType<TodoList_user, 'todos'>>;
-type Edges = $NonMaybeType<$ElementType<Todos, 'edges'>>;
-type Edge = $NonMaybeType<$ElementType<Edges, number>>;
-type Node = $NonMaybeType<$ElementType<Edge, 'node'>>;
+import React, { SyntheticEvent } from 'react';
+import {graphql, } from 'react-relay';
+import {TodoList_user} from 'relay/TodoList_user.graphql';
+import { useRelayEnvironment, useRefetchableFragment } from 'relay-experimental';
+type Todos = TodoList_user['todos'];
+type Edges = Todos['edges'];
+type Edge = Edges['0'];
+type Node = Edge['node'];
 
-type Props = {|
-  +relay: RelayProp,
-  +user: TodoList_user,
-|};
+const Scheduler = require('scheduler');
+
+type Props = {
+  user: TodoList_user,
+};
 
 const TodoList = (props: Props) => {
   const environment = useRelayEnvironment();
 
-  const user = useFragment(graphql`
-    fragment TodoList_user on User {
+  const [user, refetch] = useRefetchableFragment(graphql`
+    fragment TodoList_user on User 
+    @refetchable(queryName: "TodoListRefetchQuery")
+    @argumentDefinitions(
+      first: { type: Int, defaultValue: 3 }
+      after: { type: String }
+    ) {
+      id
       todos(
-        first: 2147483647 # max GraphQLInt
+        first: $first, after: $after
       ) @connection(key: "TodoList_todos") {
         edges {
           node {
@@ -52,6 +59,8 @@ const TodoList = (props: Props) => {
     }
   `, props.user);
 
+  console.log('user: ', props.user, user);
+
   const {todos, totalCount, completedCount} = user;
 
   const handleMarkAllChange = (e: SyntheticEvent<HTMLInputElement>) => {
@@ -62,13 +71,39 @@ const TodoList = (props: Props) => {
     }
   };
 
-  const nodes: $ReadOnlyArray<Node> =
+  const nodes: ReadonlyArray<Node> =
     todos && todos.edges
       ? todos.edges
           .filter(Boolean)
           .map((edge: Edge) => edge.node)
           .filter(Boolean)
       : [];
+
+  const onRefetch = () => {
+    Scheduler.unstable_runWithPriority(Scheduler.unstable_NormalPriority, () => {
+      refetch({
+        id: user.id,
+      });
+    });
+
+    // Scheduler.unstable_runWithPriority(Scheduler.unstable_LowPriority, () => {
+    //   refetch({
+    //     id: user.id,
+    //   });
+    // });
+
+    // Scheduler.unstable_runWithPriority(Scheduler.unstable_ImmediatePriority, () => {
+    //   refetch({
+    //     id: user.id,
+    //   });
+    // });
+
+    // Scheduler.unstable_runWithPriority(Scheduler.unstable_UserBlockingPriority, () => {
+    //   refetch({
+    //     id: user.id,
+    //   });
+    // });
+  };
 
   return (
     <section className="main">
@@ -86,6 +121,9 @@ const TodoList = (props: Props) => {
           <Todo key={node.id} todo={node} user={user} />
         ))}
       </ul>
+      <button onClick={onRefetch}>
+        Refetch
+      </button>
     </section>
   );
 };

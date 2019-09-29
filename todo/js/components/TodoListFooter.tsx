@@ -14,28 +14,30 @@
 import RemoveCompletedTodosMutation from '../mutations/RemoveCompletedTodosMutation';
 
 import React from 'react';
-import {graphql, type RelayProp} from 'react-relay';
+import {graphql, RelayProp} from 'react-relay';
 import { useFragment, useRelayEnvironment } from 'relay-experimental';
-import type {TodoListFooter_user} from 'relay/TodoListFooter_user.graphql';
-type Todos = $NonMaybeType<$ElementType<TodoListFooter_user, 'todos'>>;
-type Edges = $NonMaybeType<$ElementType<Todos, 'edges'>>;
-type Edge = $NonMaybeType<$ElementType<Edges, number>>;
+import {TodoListFooter_user} from 'relay/TodoListFooter_user.graphql';
+type Todos = TodoListFooter_user['todos'];
+type Edges = Todos['edges'];
+type Edge = Edges['0'];
 
-type Props = {|
-  +relay: RelayProp,
-  +user: TodoListFooter_user,
-|};
+type Props = {
+  user: TodoListFooter_user,
+};
 
 const TodoListFooter = (props: Props) => {
   const environment = useRelayEnvironment();
 
   const user = useFragment(graphql`
-    fragment TodoListFooter_user on User {
+    fragment TodoListFooter_user on User @argumentDefinitions(
+      first: { type: Int, defaultValue: 3 }
+      after: { type: String }
+    ) {
       id
       userId
       completedCount
       todos(
-        first: 2147483647 # max GraphQLInt
+        first: $first, after: $after
       ) @connection(key: "TodoList_todos") {
         edges {
           node {
@@ -50,10 +52,10 @@ const TodoListFooter = (props: Props) => {
 
   const {todos, completedCount, totalCount} = user;
 
-  const completedEdges: $ReadOnlyArray<?Edge> =
+  const completedEdges: ReadonlyArray<Edge | null> =
     todos && todos.edges
       ? todos.edges.filter(
-          (edge: ?Edge) => edge && edge.node && edge.node.complete,
+          (edge: Edge | null) => edge && edge.node && edge.node.complete,
         )
       : [];
 

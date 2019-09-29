@@ -21,8 +21,8 @@ import {
   Network,
   RecordSource,
   Store,
-  type RequestNode,
-  type Variables,
+  RequestNode,
+  Variables,
 } from 'relay-runtime';
 import { RelayEnvironmentProvider } from 'relay-experimental';
 

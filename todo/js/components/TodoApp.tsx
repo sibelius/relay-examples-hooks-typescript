@@ -18,21 +18,24 @@ import TodoTextInput from './TodoTextInput';
 
 import React from 'react';
 import {graphql} from 'react-relay';
-import type {TodoApp_user} from 'relay/TodoApp_user.graphql';
+import {TodoApp_user} from 'relay/TodoApp_user.graphql';
 import { useFragment, useRelayEnvironment } from 'relay-experimental';
 
-type Props = {|
-  +user: TodoApp_user,
-|};
+type Props = {
+  user: TodoApp_user,
+};
 
 const TodoApp = (props: Props) => {
   const user = useFragment(graphql`
-    fragment TodoApp_user on User {
+    fragment TodoApp_user on User @argumentDefinitions(
+      first: { type: Int, defaultValue: 3 }
+      after: { type: String }
+    ) {
       id
       userId
       totalCount
-      ...TodoListFooter_user
-      ...TodoList_user
+      ...TodoListFooter_user @arguments(first: $first, after: $after)
+      ...TodoList_user @arguments(first: $first, after: $after)
     }
   `, props.user);
   const environment = useRelayEnvironment();

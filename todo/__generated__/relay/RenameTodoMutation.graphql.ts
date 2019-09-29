@@ -1,35 +1,27 @@
-/**
- * @flow
- * @relayHash f433a1b216b4d686a085e845430d5808
- */
+/* tslint:disable */
 
-/* eslint-disable */
+import { ConcreteRequest } from "relay-runtime";
+export type RenameTodoInput = {
+    readonly id: string;
+    readonly text: string;
+    readonly clientMutationId?: string | null;
+};
+export type RenameTodoMutationVariables = {
+    readonly input: RenameTodoInput;
+};
+export type RenameTodoMutationResponse = {
+    readonly renameTodo: {
+        readonly todo: {
+            readonly id: string;
+            readonly text: string;
+        };
+    } | null;
+};
+export type RenameTodoMutation = {
+    readonly response: RenameTodoMutationResponse;
+    readonly variables: RenameTodoMutationVariables;
+};
 
-'use strict';
-
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-export type RenameTodoInput = {|
-  id: string,
-  text: string,
-  clientMutationId?: ?string,
-|};
-export type RenameTodoMutationVariables = {|
-  input: RenameTodoInput
-|};
-export type RenameTodoMutationResponse = {|
-  +renameTodo: ?{|
-    +todo: {|
-      +id: string,
-      +text: string,
-    |}
-  |}
-|};
-export type RenameTodoMutation = {|
-  variables: RenameTodoMutationVariables,
-  response: RenameTodoMutationResponse,
-|};
-*/
 
 
 /*
@@ -45,7 +37,7 @@ mutation RenameTodoMutation(
 }
 */
 
-const node/*: ConcreteRequest*/ = (function(){
+const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
@@ -123,6 +115,5 @@ return {
   }
 };
 })();
-// prettier-ignore
-(node/*: any*/).hash = 'de4aa1639055c2e6a78ee22cce29870a';
-module.exports = node;
+(node as any).hash = 'de4aa1639055c2e6a78ee22cce29870a';
+export default node;

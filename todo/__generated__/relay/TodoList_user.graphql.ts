@@ -1,45 +1,35 @@
-/**
- * @flow
- */
+/* tslint:disable */
 
-/* eslint-disable */
-
-'use strict';
-
-/*::
-import type { ReaderFragment } from 'relay-runtime';
-import type { Todo_todo$ref } from "./Todo_todo.graphql";
-import type { Todo_user$ref } from "./Todo_user.graphql";
-import type { FragmentReference } from "relay-runtime";
-declare export opaque type TodoList_user$ref: FragmentReference;
-declare export opaque type TodoList_user$fragmentType: TodoList_user$ref;
-export type TodoList_user = {|
-  +todos: ?{|
-    +edges: ?$ReadOnlyArray<?{|
-      +node: ?{|
-        +id: string,
-        +complete: boolean,
-        +$fragmentRefs: Todo_todo$ref,
-      |}
-    |}>
-  |},
-  +id: string,
-  +userId: string,
-  +totalCount: number,
-  +completedCount: number,
-  +$fragmentRefs: Todo_user$ref,
-  +$refType: TodoList_user$ref,
-|};
-export type TodoList_user$data = TodoList_user;
-export type TodoList_user$key = {
-  +$data?: TodoList_user$data,
-  +$fragmentRefs: TodoList_user$ref,
+import { ReaderFragment } from "relay-runtime";
+import { Todo_todo$ref } from "./Todo_todo.graphql";
+import { Todo_user$ref } from "./Todo_user.graphql";
+import { TodoList_user$ref } from "./TodoListRefetchQuery.graphql";
+export { TodoList_user$ref };
+export type TodoList_user = {
+    readonly id: string;
+    readonly todos: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly id: string;
+                readonly complete: boolean;
+                readonly " $fragmentRefs": Todo_todo$ref;
+            } | null;
+        } | null> | null;
+    } | null;
+    readonly userId: string;
+    readonly totalCount: number;
+    readonly completedCount: number;
+    readonly " $fragmentRefs": Todo_user$ref;
+    readonly " $refType": TodoList_user$ref;
 };
-*/
 
 
-const node/*: ReaderFragment*/ = (function(){
-var v0 = {
+
+const node: ReaderFragment = (function(){
+var v0 = [
+  "todos"
+],
+v1 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
@@ -53,17 +43,43 @@ return {
   "metadata": {
     "connection": [
       {
-        "count": null,
-        "cursor": null,
+        "count": "first",
+        "cursor": "after",
         "direction": "forward",
-        "path": [
-          "todos"
-        ]
+        "path": (v0/*: any*/)
       }
-    ]
+    ],
+    "refetch": {
+      "connection": {
+        "forward": {
+          "count": "first",
+          "cursor": "after"
+        },
+        "backward": null,
+        "path": (v0/*: any*/)
+      },
+      "operation": require('./TodoListRefetchQuery.graphql.ts'),
+      "fragmentPathInResult": [
+        "node"
+      ]
+    }
   },
-  "argumentDefinitions": [],
+  "argumentDefinitions": [
+    {
+      "kind": "LocalArgument",
+      "name": "first",
+      "type": "Int",
+      "defaultValue": 3
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "after",
+      "type": "String",
+      "defaultValue": null
+    }
+  ],
   "selections": [
+    (v1/*: any*/),
     {
       "kind": "LinkedField",
       "alias": "todos",
@@ -91,7 +107,7 @@ return {
               "concreteType": "Todo",
               "plural": false,
               "selections": [
-                (v0/*: any*/),
+                (v1/*: any*/),
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -149,7 +165,6 @@ return {
         }
       ]
     },
-    (v0/*: any*/),
     {
       "kind": "ScalarField",
       "alias": null,
@@ -179,6 +194,5 @@ return {
   ]
 };
 })();
-// prettier-ignore
-(node/*: any*/).hash = '4c169798c328a2b4d9b4ae5227d016bb';
-module.exports = node;
+(node as any).hash = 'e6f8a49ede9e5cae301fd570856a2cef';
+export default node;

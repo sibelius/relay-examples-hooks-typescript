@@ -1,39 +1,31 @@
-/**
- * @flow
- * @relayHash bd070297db36f06c6f9beb7f2cfc14fc
- */
+/* tslint:disable */
 
-/* eslint-disable */
+import { ConcreteRequest } from "relay-runtime";
+export type MarkAllTodosInput = {
+    readonly complete: boolean;
+    readonly userId: string;
+    readonly clientMutationId?: string | null;
+};
+export type MarkAllTodosMutationVariables = {
+    readonly input: MarkAllTodosInput;
+};
+export type MarkAllTodosMutationResponse = {
+    readonly markAllTodos: {
+        readonly changedTodos: ReadonlyArray<{
+            readonly id: string;
+            readonly complete: boolean;
+        }> | null;
+        readonly user: {
+            readonly id: string;
+            readonly completedCount: number;
+        };
+    } | null;
+};
+export type MarkAllTodosMutation = {
+    readonly response: MarkAllTodosMutationResponse;
+    readonly variables: MarkAllTodosMutationVariables;
+};
 
-'use strict';
-
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-export type MarkAllTodosInput = {|
-  complete: boolean,
-  userId: string,
-  clientMutationId?: ?string,
-|};
-export type MarkAllTodosMutationVariables = {|
-  input: MarkAllTodosInput
-|};
-export type MarkAllTodosMutationResponse = {|
-  +markAllTodos: ?{|
-    +changedTodos: ?$ReadOnlyArray<{|
-      +id: string,
-      +complete: boolean,
-    |}>,
-    +user: {|
-      +id: string,
-      +completedCount: number,
-    |},
-  |}
-|};
-export type MarkAllTodosMutation = {|
-  variables: MarkAllTodosMutationVariables,
-  response: MarkAllTodosMutationResponse,
-|};
-*/
 
 
 /*
@@ -53,7 +45,7 @@ mutation MarkAllTodosMutation(
 }
 */
 
-const node/*: ConcreteRequest*/ = (function(){
+const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
@@ -151,6 +143,5 @@ return {
   }
 };
 })();
-// prettier-ignore
-(node/*: any*/).hash = '779c582c4ba0ee3c5be19942628dfaf3';
-module.exports = node;
+(node as any).hash = '779c582c4ba0ee3c5be19942628dfaf3';
+export default node;
