@@ -14,15 +14,15 @@
 import {
   commitMutation,
   graphql,
-  type Disposable,
-  type Environment,
-  type RecordSourceSelectorProxy,
+  Disposable,
+  Environment,
+  RecordSourceSelectorProxy,
 } from 'react-relay';
 
 import {ConnectionHandler} from 'relay-runtime';
-import type {Todo_user} from 'relay/Todo_user.graphql';
-import type {Todo_todo} from 'relay/Todo_todo.graphql';
-import type {RemoveTodoInput} from 'relay/RemoveTodoMutation.graphql';
+import {Todo_user} from 'relay/Todo_user.graphql';
+import {Todo_todo} from 'relay/Todo_todo.graphql';
+import {RemoveTodoInput} from 'relay/RemoveTodoMutation.graphql';
 
 const mutation = graphql`
   mutation RemoveTodoMutation($input: RemoveTodoInput!) {

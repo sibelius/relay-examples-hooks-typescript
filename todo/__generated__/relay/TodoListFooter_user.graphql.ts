@@ -1,40 +1,27 @@
-/**
- * @flow
- */
+/* tslint:disable */
 
-/* eslint-disable */
-
-'use strict';
-
-/*::
-import type { ReaderFragment } from 'relay-runtime';
-import type { FragmentReference } from "relay-runtime";
-declare export opaque type TodoListFooter_user$ref: FragmentReference;
-declare export opaque type TodoListFooter_user$fragmentType: TodoListFooter_user$ref;
-export type TodoListFooter_user = {|
-  +id: string,
-  +userId: string,
-  +completedCount: number,
-  +todos: ?{|
-    +edges: ?$ReadOnlyArray<?{|
-      +node: ?{|
-        +id: string,
-        +complete: boolean,
-      |}
-    |}>
-  |},
-  +totalCount: number,
-  +$refType: TodoListFooter_user$ref,
-|};
-export type TodoListFooter_user$data = TodoListFooter_user;
-export type TodoListFooter_user$key = {
-  +$data?: TodoListFooter_user$data,
-  +$fragmentRefs: TodoListFooter_user$ref,
+import { ReaderFragment } from "relay-runtime";
+declare const _TodoListFooter_user$ref: unique symbol;
+export type TodoListFooter_user$ref = typeof _TodoListFooter_user$ref;
+export type TodoListFooter_user = {
+    readonly id: string;
+    readonly userId: string;
+    readonly completedCount: number;
+    readonly todos: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly id: string;
+                readonly complete: boolean;
+            } | null;
+        } | null> | null;
+    } | null;
+    readonly totalCount: number;
+    readonly " $refType": TodoListFooter_user$ref;
 };
-*/
 
 
-const node/*: ReaderFragment*/ = (function(){
+
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
@@ -49,8 +36,8 @@ return {
   "metadata": {
     "connection": [
       {
-        "count": null,
-        "cursor": null,
+        "count": "first",
+        "cursor": "after",
         "direction": "forward",
         "path": [
           "todos"
@@ -58,7 +45,20 @@ return {
       }
     ]
   },
-  "argumentDefinitions": [],
+  "argumentDefinitions": [
+    {
+      "kind": "LocalArgument",
+      "name": "first",
+      "type": "Int",
+      "defaultValue": 3
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "after",
+      "type": "String",
+      "defaultValue": null
+    }
+  ],
   "selections": [
     (v0/*: any*/),
     {
@@ -165,6 +165,5 @@ return {
   ]
 };
 })();
-// prettier-ignore
-(node/*: any*/).hash = '3225adf0f3b5d0a46ee4c63c8dbd9b08';
-module.exports = node;
+(node as any).hash = '2ee446cb0ef59626d3993b31f8200627';
+export default node;

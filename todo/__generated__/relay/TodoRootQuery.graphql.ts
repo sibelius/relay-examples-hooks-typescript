@@ -1,28 +1,20 @@
-/**
- * @flow
- * @relayHash f61ad62fcf102903e1f8e4b2411b13fd
- */
+/* tslint:disable */
 
-/* eslint-disable */
+import { ConcreteRequest } from "relay-runtime";
+import { TodoApp_user$ref } from "./TodoApp_user.graphql";
+export type TodoRootQueryVariables = {
+    readonly userId?: string | null;
+};
+export type TodoRootQueryResponse = {
+    readonly user: {
+        readonly " $fragmentRefs": TodoApp_user$ref;
+    } | null;
+};
+export type TodoRootQuery = {
+    readonly response: TodoRootQueryResponse;
+    readonly variables: TodoRootQueryVariables;
+};
 
-'use strict';
-
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-import type { TodoApp_user$ref } from "./TodoApp_user.graphql";
-export type TodoRootQueryVariables = {|
-  userId?: ?string
-|};
-export type TodoRootQueryResponse = {|
-  +user: ?{|
-    +$fragmentRefs: TodoApp_user$ref
-  |}
-|};
-export type TodoRootQuery = {|
-  variables: TodoRootQueryVariables,
-  response: TodoRootQueryResponse,
-|};
-*/
 
 
 /*
@@ -39,15 +31,15 @@ fragment TodoApp_user on User {
   id
   userId
   totalCount
-  ...TodoListFooter_user
-  ...TodoList_user
+  ...TodoListFooter_user_12EXNx
+  ...TodoList_user_12EXNx
 }
 
-fragment TodoListFooter_user on User {
+fragment TodoListFooter_user_12EXNx on User {
   id
   userId
   completedCount
-  todos(first: 2147483647) {
+  todos(first: 3) {
     edges {
       node {
         id
@@ -64,8 +56,9 @@ fragment TodoListFooter_user on User {
   totalCount
 }
 
-fragment TodoList_user on User {
-  todos(first: 2147483647) {
+fragment TodoList_user_12EXNx on User {
+  id
+  todos(first: 3) {
     edges {
       node {
         id
@@ -80,7 +73,6 @@ fragment TodoList_user on User {
       hasNextPage
     }
   }
-  id
   userId
   totalCount
   completedCount
@@ -101,7 +93,7 @@ fragment Todo_user on User {
 }
 */
 
-const node/*: ConcreteRequest*/ = (function(){
+const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
@@ -128,7 +120,7 @@ v3 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 2147483647
+    "value": 3
   }
 ];
 return {
@@ -198,7 +190,7 @@ return {
             "kind": "LinkedField",
             "alias": null,
             "name": "todos",
-            "storageKey": "todos(first:2147483647)",
+            "storageKey": "todos(first:3)",
             "args": (v3/*: any*/),
             "concreteType": "TodoConnection",
             "plural": false,
@@ -298,11 +290,10 @@ return {
     "operationKind": "query",
     "name": "TodoRootQuery",
     "id": null,
-    "text": "query TodoRootQuery(\n  $userId: String\n) {\n  user(id: $userId) {\n    ...TodoApp_user\n    id\n  }\n}\n\nfragment TodoApp_user on User {\n  id\n  userId\n  totalCount\n  ...TodoListFooter_user\n  ...TodoList_user\n}\n\nfragment TodoListFooter_user on User {\n  id\n  userId\n  completedCount\n  todos(first: 2147483647) {\n    edges {\n      node {\n        id\n        complete\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  totalCount\n}\n\nfragment TodoList_user on User {\n  todos(first: 2147483647) {\n    edges {\n      node {\n        id\n        complete\n        ...Todo_todo\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  id\n  userId\n  totalCount\n  completedCount\n  ...Todo_user\n}\n\nfragment Todo_todo on Todo {\n  complete\n  id\n  text\n}\n\nfragment Todo_user on User {\n  id\n  userId\n  totalCount\n  completedCount\n}\n",
+    "text": "query TodoRootQuery(\n  $userId: String\n) {\n  user(id: $userId) {\n    ...TodoApp_user\n    id\n  }\n}\n\nfragment TodoApp_user on User {\n  id\n  userId\n  totalCount\n  ...TodoListFooter_user_12EXNx\n  ...TodoList_user_12EXNx\n}\n\nfragment TodoListFooter_user_12EXNx on User {\n  id\n  userId\n  completedCount\n  todos(first: 3) {\n    edges {\n      node {\n        id\n        complete\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  totalCount\n}\n\nfragment TodoList_user_12EXNx on User {\n  id\n  todos(first: 3) {\n    edges {\n      node {\n        id\n        complete\n        ...Todo_todo\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  userId\n  totalCount\n  completedCount\n  ...Todo_user\n}\n\nfragment Todo_todo on Todo {\n  complete\n  id\n  text\n}\n\nfragment Todo_user on User {\n  id\n  userId\n  totalCount\n  completedCount\n}\n",
     "metadata": {}
   }
 };
 })();
-// prettier-ignore
-(node/*: any*/).hash = '98e90b5775906ed29de51073ce1757c4';
-module.exports = node;
+(node as any).hash = '98e90b5775906ed29de51073ce1757c4';
+export default node;

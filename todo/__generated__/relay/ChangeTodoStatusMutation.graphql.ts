@@ -1,40 +1,32 @@
-/**
- * @flow
- * @relayHash 2ba6a127f5fc7f1d5db6f2247c0c5c15
- */
+/* tslint:disable */
 
-/* eslint-disable */
+import { ConcreteRequest } from "relay-runtime";
+export type ChangeTodoStatusInput = {
+    readonly complete: boolean;
+    readonly id: string;
+    readonly userId: string;
+    readonly clientMutationId?: string | null;
+};
+export type ChangeTodoStatusMutationVariables = {
+    readonly input: ChangeTodoStatusInput;
+};
+export type ChangeTodoStatusMutationResponse = {
+    readonly changeTodoStatus: {
+        readonly todo: {
+            readonly id: string;
+            readonly complete: boolean;
+        };
+        readonly user: {
+            readonly id: string;
+            readonly completedCount: number;
+        };
+    } | null;
+};
+export type ChangeTodoStatusMutation = {
+    readonly response: ChangeTodoStatusMutationResponse;
+    readonly variables: ChangeTodoStatusMutationVariables;
+};
 
-'use strict';
-
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-export type ChangeTodoStatusInput = {|
-  complete: boolean,
-  id: string,
-  userId: string,
-  clientMutationId?: ?string,
-|};
-export type ChangeTodoStatusMutationVariables = {|
-  input: ChangeTodoStatusInput
-|};
-export type ChangeTodoStatusMutationResponse = {|
-  +changeTodoStatus: ?{|
-    +todo: {|
-      +id: string,
-      +complete: boolean,
-    |},
-    +user: {|
-      +id: string,
-      +completedCount: number,
-    |},
-  |}
-|};
-export type ChangeTodoStatusMutation = {|
-  variables: ChangeTodoStatusMutationVariables,
-  response: ChangeTodoStatusMutationResponse,
-|};
-*/
 
 
 /*
@@ -54,7 +46,7 @@ mutation ChangeTodoStatusMutation(
 }
 */
 
-const node/*: ConcreteRequest*/ = (function(){
+const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
@@ -152,6 +144,5 @@ return {
   }
 };
 })();
-// prettier-ignore
-(node/*: any*/).hash = 'e232227a4f30f0e16f4e1e1a2e0cea75';
-module.exports = node;
+(node as any).hash = 'e232227a4f30f0e16f4e1e1a2e0cea75';
+export default node;

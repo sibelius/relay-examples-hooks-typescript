@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "start": "babel-node ./server.js",
-    "build": "relay-compiler --src ./js/ --schema ./data/schema.graphql --artifactDirectory ./__generated__/relay",
+    "build": "relay-compiler --src ./js/ --schema ./data/schema.graphql --artifactDirectory ./__generated__/relay --language typescript",
     "flow-typed": "flow-typed install --flowVersion=0.94.0",
     "update-schema": "babel-node ./scripts/updateSchema.js",
     "lint": "eslint ./ --cache"
@@ -16,6 +16,7 @@
     "prop-types": "^15.7.2",
     "react": "16.10.0",
     "react-dom": "16.10.0",
+    "relay-compiler-language-typescript": "6.0.0",
     "react-relay": "../../relay/dist/react-relay",
     "relay-experimental": "../../relay/dist/relay-experimental",
     "relay-runtime": "../../relay/dist/relay-runtime",
@@ -31,6 +32,7 @@
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-flow": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "^7.0.0",
     "@babel/runtime": "^7.5.5",
     "babel-eslint": "^10.0.2",
     "babel-loader": "^8.0.5",

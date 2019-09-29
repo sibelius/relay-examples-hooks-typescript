@@ -11,17 +11,17 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState, SyntheticEvent, KeyboardEvent} from 'react';
 
-type Props = {|
-  +className: string,
-  +commitOnBlur?: boolean,
-  +initialValue?: string,
-  +onCancel?: () => void,
-  +onDelete?: () => void,
-  +onSave: string => void,
-  +placeholder?: string,
-|};
+type Props = {
+  className: string,
+  commitOnBlur?: boolean,
+  initialValue?: string,
+  onCancel?: () => void,
+  onDelete?: () => void,
+  onSave: (input: string) => void,
+  placeholder?: string,
+};
 
 const ENTER_KEY_CODE = 13;
 const ESC_KEY_CODE = 27;
@@ -66,7 +66,7 @@ const TodoTextInput = ({
   const handleChange = (e: SyntheticEvent<HTMLInputElement>) =>
     setText(e.currentTarget.value);
 
-  const handleKeyDown = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (onCancel && e.keyCode === ESC_KEY_CODE) {
       onCancel();
     } else if (e.keyCode === ENTER_KEY_CODE) {

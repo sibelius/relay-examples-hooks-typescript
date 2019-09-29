@@ -14,19 +14,19 @@
 import {
   commitMutation,
   graphql,
-  type Disposable,
-  type Environment,
-  type RecordSourceSelectorProxy,
+  Disposable,
+  Environment,
+  RecordSourceSelectorProxy,
 } from 'react-relay';
 
 import {ConnectionHandler} from 'relay-runtime';
-import type {RemoveCompletedTodosInput} from 'relay/RemoveCompletedTodosMutation.graphql';
+import {RemoveCompletedTodosInput} from 'relay/RemoveCompletedTodosMutation.graphql';
 
-import type {TodoListFooter_user} from 'relay/TodoListFooter_user.graphql';
-type Todos = $NonMaybeType<$ElementType<TodoListFooter_user, 'todos'>>;
-type Edges = $NonMaybeType<$ElementType<Todos, 'edges'>>;
-type Edge = $NonMaybeType<$ElementType<Edges, number>>;
-type Node = $NonMaybeType<$ElementType<Edge, 'node'>>;
+import {TodoListFooter_user} from 'relay/TodoListFooter_user.graphql';
+type Todos = TodoListFooter_user['todos'];
+type Edges = Todos['edges'];
+type Edge = Edges['0'];
+type Node = Edge['node'];
 
 const mutation = graphql`
   mutation RemoveCompletedTodosMutation($input: RemoveCompletedTodosInput!) {
@@ -43,7 +43,7 @@ const mutation = graphql`
 function sharedUpdater(
   store: RecordSourceSelectorProxy,
   user: TodoListFooter_user,
-  deletedIDs: $ReadOnlyArray<string>,
+  deletedIDs: ReadonlyArray<string>,
 ) {
   const userProxy = store.get(user.id);
   const conn = ConnectionHandler.getConnection(userProxy, 'TodoList_todos');
@@ -77,10 +77,10 @@ function commit(
     },
     optimisticUpdater: (store: RecordSourceSelectorProxy) => {
       // Relay returns Maybe types a lot of times in a connection that we need to cater for
-      const completedNodeIds: $ReadOnlyArray<string> = todos.edges
+      const completedNodeIds: ReadonlyArray<string> = todos.edges
         ? todos.edges
             .filter(Boolean)
-            .map((edge: Edge): ?Node => edge.node)
+            .map((edge: Edge): Node | null => edge.node)
             .filter(Boolean)
             .filter((node: Node): boolean => node.complete)
             .map((node: Node): string => node.id)
